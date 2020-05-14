@@ -13,131 +13,132 @@ mixin _$Login on _Login, Store {
 
   @override
   String get username {
-    _$usernameAtom.context.enforceReadPolicy(_$usernameAtom);
-    _$usernameAtom.reportObserved();
+    _$usernameAtom.reportRead();
     return super.username;
   }
 
   @override
   set username(String value) {
-    _$usernameAtom.context.conditionallyRunInAction(() {
+    _$usernameAtom.reportWrite(value, super.username, () {
       super.username = value;
-      _$usernameAtom.reportChanged();
-    }, _$usernameAtom, name: '${_$usernameAtom.name}_set');
+    });
   }
 
   final _$passwordAtom = Atom(name: '_Login.password');
 
   @override
   String get password {
-    _$passwordAtom.context.enforceReadPolicy(_$passwordAtom);
-    _$passwordAtom.reportObserved();
+    _$passwordAtom.reportRead();
     return super.password;
   }
 
   @override
   set password(String value) {
-    _$passwordAtom.context.conditionallyRunInAction(() {
+    _$passwordAtom.reportWrite(value, super.password, () {
       super.password = value;
-      _$passwordAtom.reportChanged();
-    }, _$passwordAtom, name: '${_$passwordAtom.name}_set');
+    });
   }
 
   final _$emailAtom = Atom(name: '_Login.email');
 
   @override
   String get email {
-    _$emailAtom.context.enforceReadPolicy(_$emailAtom);
-    _$emailAtom.reportObserved();
+    _$emailAtom.reportRead();
     return super.email;
   }
 
   @override
   set email(String value) {
-    _$emailAtom.context.conditionallyRunInAction(() {
+    _$emailAtom.reportWrite(value, super.email, () {
       super.email = value;
-      _$emailAtom.reportChanged();
-    }, _$emailAtom, name: '${_$emailAtom.name}_set');
+    });
   }
 
   final _$leftAtom = Atom(name: '_Login.left');
 
   @override
   Color get left {
-    _$leftAtom.context.enforceReadPolicy(_$leftAtom);
-    _$leftAtom.reportObserved();
+    _$leftAtom.reportRead();
     return super.left;
   }
 
   @override
   set left(Color value) {
-    _$leftAtom.context.conditionallyRunInAction(() {
+    _$leftAtom.reportWrite(value, super.left, () {
       super.left = value;
-      _$leftAtom.reportChanged();
-    }, _$leftAtom, name: '${_$leftAtom.name}_set');
+    });
   }
 
   final _$rightAtom = Atom(name: '_Login.right');
 
   @override
   Color get right {
-    _$rightAtom.context.enforceReadPolicy(_$rightAtom);
-    _$rightAtom.reportObserved();
+    _$rightAtom.reportRead();
     return super.right;
   }
 
   @override
   set right(Color value) {
-    _$rightAtom.context.conditionallyRunInAction(() {
+    _$rightAtom.reportWrite(value, super.right, () {
       super.right = value;
-      _$rightAtom.reportChanged();
-    }, _$rightAtom, name: '${_$rightAtom.name}_set');
+    });
   }
 
   final _$currentPageAtom = Atom(name: '_Login.currentPage');
 
   @override
   int get currentPage {
-    _$currentPageAtom.context.enforceReadPolicy(_$currentPageAtom);
-    _$currentPageAtom.reportObserved();
+    _$currentPageAtom.reportRead();
     return super.currentPage;
   }
 
   @override
   set currentPage(int value) {
-    _$currentPageAtom.context.conditionallyRunInAction(() {
+    _$currentPageAtom.reportWrite(value, super.currentPage, () {
       super.currentPage = value;
-      _$currentPageAtom.reportChanged();
-    }, _$currentPageAtom, name: '${_$currentPageAtom.name}_set');
+    });
   }
 
   final _$_LoginActionController = ActionController(name: '_Login');
 
   @override
-  bool validateLogin(String userName, String password) {
-    final _$actionInfo = _$_LoginActionController.startAction();
+  void validateLogin(
+      PageController pageController,
+      TextEditingController userName,
+      TextEditingController password,
+      BuildContext context) {
+    final _$actionInfo =
+        _$_LoginActionController.startAction(name: '_Login.validateLogin');
     try {
-      return super.validateLogin(userName, password);
+      return super.validateLogin(pageController, userName, password, context);
     } finally {
       _$_LoginActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  bool validateSignUp(String userName, String password, String email) {
-    final _$actionInfo = _$_LoginActionController.startAction();
+  void validateSignUp(
+      PageController pageController,
+      TextEditingController userName,
+      TextEditingController password,
+      TextEditingController email,
+      BuildContext context) {
+    final _$actionInfo =
+        _$_LoginActionController.startAction(name: '_Login.validateSignUp');
     try {
-      return super.validateSignUp(userName, password, email);
+      return super
+          .validateSignUp(pageController, userName, password, email, context);
     } finally {
       _$_LoginActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void changeCurrentPage(int index) {
-    final _$actionInfo = _$_LoginActionController.startAction();
+  void changeCurrentPage(int index, BuildContext context) {
+    final _$actionInfo =
+        _$_LoginActionController.startAction(name: '_Login.changeCurrentPage');
     try {
-      return super.changeCurrentPage(index);
+      return super.changeCurrentPage(index, context);
     } finally {
       _$_LoginActionController.endAction(_$actionInfo);
     }
@@ -145,8 +146,13 @@ mixin _$Login on _Login, Store {
 
   @override
   String toString() {
-    final string =
-        'username: ${username.toString()},password: ${password.toString()},email: ${email.toString()},left: ${left.toString()},right: ${right.toString()},currentPage: ${currentPage.toString()}';
-    return '{$string}';
+    return '''
+username: ${username},
+password: ${password},
+email: ${email},
+left: ${left},
+right: ${right},
+currentPage: ${currentPage}
+    ''';
   }
 }

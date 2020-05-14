@@ -1,27 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:fluttertask/store/login/login.dart';
 import 'package:fluttertask/utils/bubble_indication_painter.dart';
-import '../utils/curve.dart';
+import 'package:fluttertask/utils/curve.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
-
-  @override
-  _LoginPageState createState() => new _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage>
-    with SingleTickerProviderStateMixin {
+class LoginUi extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final Login login = Login();
-  PageController _pageController;
-  TextEditingController loginUsername;
-  TextEditingController loginPassword;
-  TextEditingController signUpUsername;
-  TextEditingController signUpPassword;
-  TextEditingController email;
+  PageController _pageController = new PageController();
+  TextEditingController loginUsername = new TextEditingController();
+  TextEditingController loginPassword = new TextEditingController();
+  TextEditingController signUpUsername = new TextEditingController();
+  TextEditingController signUpPassword = new TextEditingController();
+  TextEditingController email = new TextEditingController();
   Color left = Colors.white;
   Color right = Colors.white24;
 
@@ -65,7 +56,7 @@ class _LoginPageState extends State<LoginPage>
                         child: PageView(
                           controller: _pageController,
                           onPageChanged: (i) {
-                            setPage(i);
+                            setPage(i, context);
                           },
                           children: <Widget>[
                             _buildSignIn(context),
@@ -109,26 +100,6 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  @override
-  void dispose() {
-    _pageController?.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loginUsername = TextEditingController();
-    loginPassword = TextEditingController();
-    signUpUsername = TextEditingController();
-    signUpPassword = TextEditingController();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    _pageController = PageController();
-  }
-
   Widget _buildMenuBar(BuildContext context) {
     return Container(
       width: 300.0,
@@ -146,7 +117,7 @@ class _LoginPageState extends State<LoginPage>
               child: FlatButton(
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
-                onPressed: _onSignInButtonPress,
+                onPressed: () => _onSignInButtonPress(context),
                 child: Observer(
                   builder: (_) => Text(
                     "Login",
@@ -163,7 +134,7 @@ class _LoginPageState extends State<LoginPage>
               child: FlatButton(
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
-                onPressed: _onSignUpButtonPress,
+                onPressed: () => _onSignUpButtonPress(context),
                 child: Observer(
                   builder: (_) => Text(
                     "Sign Up",
@@ -399,58 +370,16 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  void _onSignInButtonPress() {
-    _pageController.animateToPage(0,
-        duration: Duration(milliseconds: 500), curve: Curves.decelerate);
-    if (login.currentPage == 0) {
-      if (loginUsername != null && loginPassword != null) {
-        if (login.validateLogin(loginUsername.text, loginPassword.text)) {
-          _showAlert("Login and Password Validated");
-        } else {
-          _showAlert(
-              'Login and Password Validation Error , please fill correct login or Password ( Password length must bit a bit or exactly 8 characters )');
-        }
-      }
-      else
-        _showAlert(
-            'Login and Password Validation Error , please fill correct login or Password ( Password length must bit a bit or exactly 8 characters )');
-    }
+  void _onSignInButtonPress(BuildContext context) {
+    login.validateLogin(_pageController, loginUsername, loginPassword, context);
   }
 
-  void _onSignUpButtonPress() {
-    _pageController?.animateToPage(1,
-        duration: Duration(milliseconds: 500), curve: Curves.decelerate);
-    if (login.currentPage == 1) {
-      if (signUpUsername != null && signUpPassword != null && email != null) {
-        if (login.validateSignUp(
-            signUpUsername.text, signUpPassword.text, email.text)) {
-          _showAlert("Login, Password and Email Validated");
-        } else {
-          _showAlert(
-              'Login and Password Validation Error , please fill correct login or Password ( Password length must bit a bit or exactly 8 characters )');
-        }
-      } else
-        _showAlert(
-            'Login and Password Validation Error , please fill correct login or Password ( Password length must bit a bit or exactly 8 characters )');
-    }
+  void _onSignUpButtonPress(BuildContext context) {
+    login.validateSignUp(
+        _pageController, signUpUsername, signUpPassword, email, context);
   }
 
-  void setPage(int i) {
-    login.changeCurrentPage(i);
-  }
-
-  void _showAlert(String alertText) {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text("Information"),
-              content: Text(alertText),
-              actions: <Widget>[
-                new FlatButton(
-                  child: const Text("OK"),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
-            ));
+  void setPage(int i, BuildContext context) {
+    login.changeCurrentPage(i, context);
   }
 }
