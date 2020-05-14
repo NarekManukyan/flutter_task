@@ -10,21 +10,20 @@ class CustomInputBorder {
       labelText: title,
       enabledBorder: const OutlineInputBorder(
         borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-        borderSide: const BorderSide(color: Color(0xFFED5E58), width: 0.0),
+        borderSide: const BorderSide(color: Color(0xFFED5E58),width: 2),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-        borderSide: const BorderSide(color: Color(0xFFED5E58)),
+        borderSide: const BorderSide(color: Color(0xFFED5E58),width: 2),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-        borderSide: const BorderSide(color: Colors.red),
+        borderSide: const BorderSide(color: Colors.red,width: 2),
       ),
       border: OutlineInputBorder(
         borderRadius: const BorderRadius.all(Radius.circular(30.0)),
-        borderSide: const BorderSide(color: Color(0xFFED5E58)),
+        borderSide: const BorderSide(color: Color(0xFFED5E58),width: 2),
       ),
-      fillColor: Color(0xFFED5E58),
       errorStyle: TextStyle(color: Color(0xFFED5E58)),
     );
   }

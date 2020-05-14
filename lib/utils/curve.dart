@@ -13,11 +13,11 @@ class CurvePainter extends CustomPainter {
     var path = Path();
 
     path.moveTo(0, size.height * 0.2);
-    path.lineTo(0, size.height - roundnessFactor);
+    path.lineTo(0, size.height);
     path.quadraticBezierTo(0, size.height, roundnessFactor, size.height);
     path.lineTo(size.width - roundnessFactor, size.height);
     path.quadraticBezierTo(
-        size.width, size.height, size.width, size.height - roundnessFactor);
+        size.width, size.height, size.width, size.height);
     path.lineTo(size.width, roundnessFactor * 3);
     path.quadraticBezierTo(size.width - 50, roundnessFactor,
         size.width - roundnessFactor * 2, roundnessFactor * 1.5);
