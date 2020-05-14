@@ -9,22 +9,21 @@ class Login = _Login with _$Login;
 
 abstract class _Login with Store {
   @observable
-  String username;
-
-  @observable
-  String password;
-
-  @observable
-  String email;
-
-  @observable
   Color left = Colors.white;
-
   @observable
   Color right = Colors.white24;
-
   @observable
   int currentPage = 0;
+  @observable
+  bool validatedLoginUserName = false;
+  @observable
+  bool validatedLoginPassword = false;
+  @observable
+  bool validatedSignUpUserName = false;
+  @observable
+  bool validatedSignUpPassword = false;
+  @observable
+  bool validatedSignUpEmail = false;
 
   @action
   void validateLogin(
@@ -66,7 +65,7 @@ abstract class _Login with Store {
       if (userName != null && password != null && email != null) {
         bool emailValidate = RegExp(
                 r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-            .hasMatch(userName.text);
+            .hasMatch(email.text);
         bool passwordValidate = password.text.length > 8 ? true : false;
         bool usernameValidate = userName.text.length > 4 ? true : false;
         if (emailValidate && passwordValidate && usernameValidate) {
@@ -88,12 +87,30 @@ abstract class _Login with Store {
   }
 
   @action
-  void changeCurrentPage(int index, BuildContext context) {
+  void changeCurrentPage(
+    int index,
+    BuildContext context,
+    TextEditingController loginUserName,
+    TextEditingController loginPassword,
+    TextEditingController signUpEmail,
+    TextEditingController signUpUserName,
+    TextEditingController signUpPassword,
+  ) {
     currentPage = index;
     if (index == 0) {
+      signUpEmail.clear();
+      signUpEmail.clearComposing();
+      signUpUserName.clear();
+      signUpUserName.clearComposing();
+      signUpPassword.clear();
+      signUpPassword.clearComposing();
       right = Colors.white24;
       left = Colors.white;
     } else {
+      loginUserName.clear();
+      loginUserName.clearComposing();
+      loginPassword.clear();
+      loginPassword.clearComposing();
       right = Colors.white;
       left = Colors.white24;
     }
@@ -112,5 +129,44 @@ abstract class _Login with Store {
                 ),
               ],
             ));
+  }
+
+  @action
+  void validateLoginUserName(TextEditingController controller) {
+    print(validatedLoginUserName);
+    if (controller != null) {
+      validatedLoginUserName = controller.text.length > 0;
+      print(validatedLoginUserName);
+    }
+  }
+
+  @action
+  void validateLoginPassword(TextEditingController controller) {
+    if (controller != null) {
+      validatedLoginPassword = controller.text.length >= 8;
+    }
+  }
+
+  @action
+  void validateSignUpUserName(TextEditingController controller) {
+    if (controller != null) {
+      validatedSignUpUserName = controller.text.length > 0;
+    }
+  }
+
+  @action
+  void validateSignUpPassword(TextEditingController controller) {
+    if (controller != null) {
+      validatedSignUpPassword = controller.text.length >= 8;
+    }
+  }
+
+  @action
+  void validateSignUpEmail(TextEditingController controller) {
+    if (controller != null) {
+      validatedSignUpEmail = RegExp(
+              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+          .hasMatch(controller.text);
+    }
   }
 }
